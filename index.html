@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <title>남강댐광역 관로선형</title>
-
+    <script src="좌표/충무.js"></script>
+    <script src="좌표/namhae.js"></script>
 </head>
 <body>
 
@@ -15,7 +16,21 @@
     <input type="checkbox" id="chkTerrain" onclick="setOverlayMapTypeId()" /> 지형정보 보기 
     <input type="checkbox" id="chkTraffic" onclick="setOverlayMapTypeId()" /> 교통정보 보기       
     <input type="checkbox" id="chkBicycle" onclick="setOverlayMapTypeId()" /> 자전거도로 정보 보기
-    <input type="checkbox" id="chkBicycle" onclick="setOverlayMapTypeId()" /> 충무계통
+    <input type="checkbox" id="chungmuToggle" onclick="toggleChungmu()"> 충무계통
+    <input type="checkbox" id="geojeToggle" onclick="toggleGeoje()"> 거제계통
+    <input type="checkbox" id="hadongToggle" onclick="toggleHadong()"> 하동계통
+    <input type="checkbox" id="dosu2Toggle" onclick="toggleDosu2()"> 2도수계통
+    <input type="checkbox" id="namhaeToggle" onclick="toggleNamhae()"> 남해계통
+    <input type="checkbox" id="hoehwa1Toggle" onclick="toggleHoehwa1()"> 회화1단계
+    <input type="checkbox" id="anjeongToggle" onclick="toggleAnjeong()"> 안정계통
+    <input type="checkbox" id="jinjuToggle" onclick="toggleJinju()"> 진주계통
+    <input type="checkbox" id="dosu1Toggle" onclick="toggleDosu1()"> 1도수계통
+    <input type="checkbox" id="samcheonpoToggle" onclick="toggleSamcheonpo()"> 삼천포계통
+    <input type="checkbox" id="seopoToggle" onclick="toggleSeopo()"> 서포계통
+    <input type="checkbox" id="hoehwa2Toggle" onclick="toggleHoehwa2()"> 회화2단계
+    <input type="checkbox" id="namdongToggle" onclick="toggleNamdong()"> 남동발전 계통
+
+    
     <button onclick="hideMarkers()">마커 감추기</button>
     <button onclick="showMarkers()">마커 보이기</button>
 </p>
@@ -93,6 +108,7 @@ map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 var zoomControl = new kakao.maps.ZoomControl();
 map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
 
 // 지도에 표시된 마커 객체를 가지고 있을 배열입니다
 var markers = [];
@@ -1068,8 +1084,10 @@ function hideMarkers() {
     setMarkers(null);    
 }
 
+
+
  // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(충무계통)
- var linePath = [
+ var chungmuPath = [
 new kakao.maps.LatLng(35.0965312798627, 128.100994098256),
 new kakao.maps.LatLng(35.0963226476522, 128.100845687969),
 new kakao.maps.LatLng(35.0961974808715, 128.100768049533),
@@ -5055,17 +5073,26 @@ new kakao.maps.LatLng(34.8703273721639, 128.418987713423),
 new kakao.maps.LatLng(34.8703063226292, 128.418981962519),
 new kakao.maps.LatLng(34.8702484057879, 128.418961542808),
    ];   
-  // 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#0000ff', // 선의 색깔입니다
-    strokeOpacity: 1 , // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+
+
+   // 충무계통 선 객체 생성 (처음엔 지도에 표시 안함)
+var chungmuLine = new kakao.maps.Polyline({
+    path: chungmuPath,
+    strokeWeight: 5,
+    strokeColor: '#0000ff',
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
+chungmuLine.setMap(null);
+
+// 충무계통 선 토글 함수
+function toggleChungmu() {
+    var checked = document.getElementById("chungmuToggle").checked;
+    chungmuLine.setMap(checked ? map : null);
+}
+
+
 
  // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(충무계통 측점10+00)
  var linePath = [
@@ -5258,7 +5285,7 @@ polyline.setMap(map);
 
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(충무계통(노전))
-var linePath = [
+var nojeonPath = [
 new kakao.maps.LatLng(34.914489016964, 128.358622075928),
 new kakao.maps.LatLng(34.9144515761126, 128.358673593627),
 new kakao.maps.LatLng(34.914388532676, 128.358676698123),
@@ -5276,19 +5303,26 @@ new kakao.maps.LatLng(34.9136434111897, 128.358628599579),
 new kakao.maps.LatLng(34.9136286654879, 128.358647822389),
 new kakao.maps.LatLng(34.9136104010954, 128.358672037249),
 ];   
-  // 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffff00', // 선의 색깔입니다
-    strokeOpacity: 1 , // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+
+var nojeonLine = new kakao.maps.Polyline({
+    path: nojeonPath,
+    strokeWeight: 5,
+    strokeColor: '000000',
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
+// 노전계통 토글 함수
+function toggleNojeon() {
+    var checked = document.getElementById("nojeonToggle").checked;
+    nojeonLine.setMap(checked ? map : null);
+}
+
+
+
+
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(충무계통(거운))
-var linePath = [
+var geounPath = [
 new kakao.maps.LatLng(34.9424006616781, 128.345520764591),
 new kakao.maps.LatLng(34.9423933901381, 128.345527233769),
 new kakao.maps.LatLng(34.9423668024751, 128.345532725986),
@@ -5324,18 +5358,20 @@ new kakao.maps.LatLng(34.9391933380591, 128.34746548961),
 new kakao.maps.LatLng(34.9391843288629, 128.347465816164),
 ];   
   // 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffff00', // 선의 색깔입니다
-    strokeOpacity: 1 , // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 거운계통 선 객체 생성 (초기에는 지도에 표시 안함)
+var geounLine = new kakao.maps.Polyline({
+    path: geounPath,
+    strokeWeight: 5,
+    strokeColor: '#ffff00', 
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
+// 거운계통 선 토글 함수
+function toggleGeoun() {
+    var checked = document.getElementById("geounToggle").checked;
+    geounLine.setMap(checked ? map : null);
+}
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(충무계통(도산삼거리))
 var linePath = [
 new kakao.maps.LatLng(34.9041618345822, 128.36360954961),
@@ -5377,7 +5413,7 @@ var polyline = new kakao.maps.Polyline({
 polyline.setMap(map);
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(거제계통)
-var linePath = [
+var geojePath = [
 new kakao.maps.LatLng(35.0967635459337, 128.101570072687),
 new kakao.maps.LatLng(35.0967327213806, 128.101507023674),
 new kakao.maps.LatLng(35.0967101916288, 128.101461331619),
@@ -11138,17 +11174,20 @@ new kakao.maps.LatLng(34.8728482910516, 128.501622966055),
 new kakao.maps.LatLng(34.8728146394123, 128.501603384253),
 ];
 
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffaa00', // 선의 색깔입니다
-    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 거제계통 선 객체 생성 (초기 미표시)
+var geojeLine = new kakao.maps.Polyline({
+    path: geojePath,
+    strokeWeight: 5,
+    strokeColor: '#ffaa00',  // 주황색
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
+// 거제계통 선 토글 함수
+function toggleGeoje() {
+    var checked = document.getElementById("geojeToggle").checked;
+    geojeLine.setMap(checked ? map : null);
+}
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(거제계통(거운))
 var linePath = [
@@ -11200,7 +11239,7 @@ var polyline = new kakao.maps.Polyline({
 polyline.setMap(map);  
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(하동계통)
-var linePath = [
+var hadongPath = [
 new kakao.maps.LatLng(35.0951074541246, 128.100203888516),
 new kakao.maps.LatLng(35.0950556357476, 128.099813338388),
 new kakao.maps.LatLng(35.0950408965176, 128.09969057714),
@@ -14392,19 +14431,24 @@ new kakao.maps.LatLng(34.9921913085846, 127.840931141533),
 new kakao.maps.LatLng(34.9921923648119, 127.841019009125),
 ];
 
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#6616c8', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 하동계통 선 객체 생성 (초기에는 지도에 표시 안함)
+var hadongLine = new kakao.maps.Polyline({
+    path: hadongPath,
+    strokeWeight: 5,
+    strokeColor: '#6616c8',  
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
-// 지도에 선을 표시합니다 
-polyline.setMap(map);  
+
+// 거운계통 선 토글 함수
+function toggleHadong() {
+    var checked = document.getElementById("hadongToggle").checked;
+    hadongLine.setMap(checked ? map : null);
+}
+
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다, (2도수계통)
-var linePath = [
+var dosu2Path  = [
 new kakao.maps.LatLng(35.150800773685, 128.021565995815),
 new kakao.maps.LatLng(35.1507556047666, 128.021578839045),
 new kakao.maps.LatLng(35.1507106299721, 128.021594511195),
@@ -15558,19 +15602,24 @@ new kakao.maps.LatLng(35.0967121591659, 128.101351193109),
 new kakao.maps.LatLng(35.0967531503763, 128.101434835511),
 new kakao.maps.LatLng(35.096800545859, 128.101532499886),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffaa00', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 2도수계통 선 생성
+var dosu2Line = new kakao.maps.Polyline({
+    path: dosu2Path,
+    strokeWeight: 5,
+    strokeColor: '#00AAFF', // 선 색상: 시원한 파랑
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
-// 지도에 선을 표시합니다 
-polyline.setMap(map); 
+
+
+// 2도수계통 토글 함수
+function toggleDosu2() {
+    var checked = document.getElementById("dosu2Toggle").checked;
+    dosu2Line.setMap(checked ? map : null);
+}
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(남해계통)
-var linePath = [
+var namhaePath = [
 new kakao.maps.LatLng(35.096770661699, 128.1015487909),
 new kakao.maps.LatLng(35.0967476008287, 128.101494660139),
 new kakao.maps.LatLng(35.0967256622371, 128.101450880679),
@@ -18650,20 +18699,24 @@ new kakao.maps.LatLng(34.8125812126447, 127.936238217923),
 new kakao.maps.LatLng(34.8126574806789, 127.936148178082),
 new kakao.maps.LatLng(34.8126672276172, 127.936136216859),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffaa00', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 남해계통 선 생성
+var namhaeLine = new kakao.maps.Polyline({
+    path: namhaePath,
+    strokeWeight: 5,
+    strokeColor: '#009688', // 청록색
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map); 
+
+// 남해계통 토글 함수
+function toggleNamhae() {
+    var checked = document.getElementById("namhaeToggle").checked;
+    namhaeLine.setMap(checked ? map : null);
+}
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(회화1단계)
-var linePath = [
+var hoehwa1Path = [
 new kakao.maps.LatLng(34.9791852126823, 128.332767600749),
 new kakao.maps.LatLng(34.9792455412116, 128.332936982827),
 new kakao.maps.LatLng(34.979270773617, 128.333035022539),
@@ -19650,20 +19703,24 @@ new kakao.maps.LatLng(35.0498067126618, 128.362524285666),
 new kakao.maps.LatLng(35.0498381046999, 128.362551121775),
 new kakao.maps.LatLng(35.0498703983537, 128.362581604082),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#0000ff', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+
+// 회화1단계 선 생성
+var hoehwa1Line = new kakao.maps.Polyline({
+    path: hoehwa1Path,       // 회화1단계 경로 배열
+    strokeWeight: 3,
+    strokeColor: '#0000ff',  // 예: 주황색
+    strokeOpacity: 1,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map); 
+// 회화1단계 토글 함수
+function toggleHoehwa1() {
+    var checked = document.getElementById("hoehwa1Toggle").checked;
+    hoehwa1Line.setMap(checked ? map : null);
+}
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(안정계통)
-var linePath = [
+var anjeongPath = [
 new kakao.maps.LatLng(34.9691001644676, 128.336799664755),
 new kakao.maps.LatLng(34.969196949054, 128.337255575458),
 new kakao.maps.LatLng(34.9692076143942, 128.337297685968),
@@ -20182,18 +20239,20 @@ new kakao.maps.LatLng(34.952373626723, 128.411059912989),
 new kakao.maps.LatLng(34.9523699005652, 128.411059190879),
 new kakao.maps.LatLng(34.9523514208791, 128.411055698574),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffaa00', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 안정계통 선 생성
+var anjeongLine = new kakao.maps.Polyline({
+    path: anjeongPath,        // 안정계통 좌표 배열
+    strokeWeight: 3,
+    strokeColor: '#ffaa00',   // 예: 짙은 파랑색
+    strokeOpacity: 1,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
-
+// 안정계통 토글 함수
+function toggleAnjeong() {
+    var checked = document.getElementById("anjeongToggle").checked;
+    anjeongLine.setMap(checked ? map : null);
+}
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다.(안정계통 관로이설구간)
 var linePath = [
 new kakao.maps.LatLng(34.9651107417484, 128.37640996419),
@@ -20250,7 +20309,7 @@ var polyline = new kakao.maps.Polyline({
 polyline.setMap(map);
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(진주계통)
-var linePath = [
+var jinjuPath = [
 new kakao.maps.LatLng(35.096111653098, 128.100774838584),
 new kakao.maps.LatLng(35.0960993702045, 128.10080667822),
 new kakao.maps.LatLng(35.0961422565921, 128.100837198376),
@@ -21958,20 +22017,23 @@ new kakao.maps.LatLng(35.1884607262737, 128.225635733497),
 new kakao.maps.LatLng(35.1884769327769, 128.225689322454),
 new kakao.maps.LatLng(35.18849263729, 128.225743344391),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffaa00', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 진주계통 선 생성
+var jinjuLine = new kakao.maps.Polyline({
+    path: jinjuPath,           // 진주계통 좌표 배열
+    strokeWeight: 3,
+    strokeColor: '#8E24AA',    // 예: 보라색
+    strokeOpacity: 1,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
+// 진주계통 토글 함수
+function toggleJinju() {
+    var checked = document.getElementById("jinjuToggle").checked;
+    jinjuLine.setMap(checked ? map : null);
+}
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(1도수계통)
-var linePath = [
+var dosu1Path = [
 new kakao.maps.LatLng(35.1506119899058, 128.021372649797),
 new kakao.maps.LatLng(35.1505725541785, 128.021392283023),
 new kakao.maps.LatLng(35.1505313302191, 128.021409238101),
@@ -23067,20 +23129,24 @@ new kakao.maps.LatLng(35.09688838772, 128.101527477005),
 new kakao.maps.LatLng(35.0969552133738, 128.101653979063),
 new kakao.maps.LatLng(35.09699430863, 128.101720216506),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#0000ff', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 1도수계통 선 생성
+var dosu1Line = new kakao.maps.Polyline({
+    path: dosu1Path,          // 1도수계통 좌표 배열
+    strokeWeight: 5,
+    strokeColor: '#2196F3',   // 파란색
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);
+// 1도수계통 토글 함수
+function toggleDosu1() {
+    var checked = document.getElementById("dosu1Toggle").checked;
+    dosu1Line.setMap(checked ? map : null);
+}
+
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(삼천포계통)
-var linePath = [
+var samcheonpoPath = [
 new kakao.maps.LatLng(35.0968323357047, 128.101514908676),
 new kakao.maps.LatLng(35.0967828098813, 128.101415720279),
 new kakao.maps.LatLng(35.0967426372677, 128.101336598119),
@@ -24607,20 +24673,23 @@ new kakao.maps.LatLng(34.9525288203995, 128.087209934125),
 new kakao.maps.LatLng(34.9525282610655, 128.087260167318),
 new kakao.maps.LatLng(34.9525266543017, 128.087279014801),
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#0000ff', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 삼천포계통 선 생성
+var samcheonpoLine = new kakao.maps.Polyline({
+    path: samcheonpoPath,       // 삼천포계통 좌표 배열
+    strokeWeight: 5,
+    strokeColor: '#FF9800',     // 주황색 계열
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
 
-// 지도에 선을 표시합니다 
-polyline.setMap(map);  
+// 삼천포계통 토글 함수
+function toggleSamcheonpo() {
+    var checked = document.getElementById("samcheonpoToggle").checked;
+    samcheonpoLine.setMap(checked ? map : null);
+}
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(서포계통)
-var linePath = [
+var seopoPath = [
 new kakao.maps.LatLng(35.0951130128379, 128.100062450918),
 new kakao.maps.LatLng(35.0951266674615, 128.099901103664),
 new kakao.maps.LatLng(35.0951256523465, 128.099883371001),
@@ -25932,19 +26001,22 @@ new kakao.maps.LatLng(35.0125138505582, 127.975144893016),
 new kakao.maps.LatLng(35.0124570671151, 127.975166231299),
 
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#aa00ff', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 서포계통 선 생성
+var seopoLine = new kakao.maps.Polyline({
+    path: seopoPath,          // 서포계통 좌표 배열
+    strokeWeight: 5,
+    strokeColor: '#4CAF50',   // 초록색 계열
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
-// 지도에 선을 표시합니다 
-polyline.setMap(map); 
 
+// 서포계통 토글 함수
+function toggleSeopo() {
+    var checked = document.getElementById("seopoToggle").checked;
+    seopoLine.setMap(checked ? map : null);
+}
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(2단계회화계통)
-var linePath = [
+var hoehwa2Path = [
 new kakao.maps.LatLng(34.9792668046266, 128.332773662703),
 new kakao.maps.LatLng(34.979220329094, 128.332906983084),
 new kakao.maps.LatLng(34.9792577414215, 128.333026116645),
@@ -26351,18 +26423,22 @@ new kakao.maps.LatLng(35.0352329965891, 128.358434350834),
 new kakao.maps.LatLng(35.0352342618483, 128.358451146137),
 
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#ffaa00', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 회화2단계 선 생성
+var hoehwa2Line = new kakao.maps.Polyline({
+    path: hoehwa2Path,          // 회화2단계 좌표 배열
+    strokeWeight: 5,
+    strokeColor: '#FF4081',     // 핑크색 계열
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
-// 지도에 선을 표시합니다 
-polyline.setMap(map); 
 
-// 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(타이관로)
+// 회화2단계 토글 함수
+function toggleHoehwa2() {
+    var checked = document.getElementById("hoehwa2Toggle").checked;
+    hoehwa2Line.setMap(checked ? map : null);
+}
+// 선
+// 을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(타이관로)
 var linePath = [
 new kakao.maps.LatLng(35.0951759968854, 128.099456690593),
 new kakao.maps.LatLng(35.0951106952538, 128.099422797225),
@@ -26515,7 +26591,7 @@ var polyline = new kakao.maps.Polyline({
 polyline.setMap(map); 
 
 // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다(남동발전)
-var linePath = [
+var namdongPath = [
 
 new kakao.maps.LatLng(35.152378767384, 128.022482086783),
 new kakao.maps.LatLng(35.152072780956, 128.022826405505),
@@ -26953,17 +27029,20 @@ new kakao.maps.LatLng(34.9521936636084, 128.088003078365),
 
 
 ];
-// 지도에 표시할 선을 생성합니다
-var polyline = new kakao.maps.Polyline({
-    path: linePath, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 3, // 선의 두께 입니다
-    strokeColor: '#55ff00', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'solid' // 선의 스타일입니다
+// 남동발전 계통 선 생성
+var namdongLine = new kakao.maps.Polyline({
+    path: namdongPath,          // 남동발전 계통 좌표 배열
+    strokeWeight: 5,
+    strokeColor: '#FF6F00',     // 짙은 주황색 (필요하면 변경 가능)
+    strokeOpacity: 0.9,
+    strokeStyle: 'solid'
 });
-// 지도에 선을 표시합니다 
-polyline.setMap(map); 
 
+// 남동발전 계통 토글 함수
+function toggleNamdong() {
+    var checked = document.getElementById("namdongToggle").checked;
+    namdongLine.setMap(checked ? map : null);
+}
 
 var drawingFlag = false; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
 var moveLine; // 선이 그려지고 있을때 마우스 움직임에 따라 그려질 선 객체 입니다
